@@ -30,6 +30,6 @@ export class TreeNodeViewModel implements TreeNode {
     }
 
     public get navigable(): boolean {
-        return this.children === undefined || this.children.length === 0;
+        return this.children === undefined;
     }
 }

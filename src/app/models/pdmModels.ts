@@ -2,6 +2,19 @@ export interface RefObject {
     ref: string;
 }
 
+export interface NavigableNode {
+    id: string;
+    objectId: string;
+    name: string;
+    code: string;
+    children?: NavigableNode[];
+}
+
+export interface NavigableObject {
+    getNavigableNode(): NavigableNode;
+    getNavigableNodes(): NavigableNode[];
+}
+
 export class BasicObject {
     constructor(id: string, objectId: string, name: string, code: string, element: Element) {
         this.id = id;
@@ -62,7 +75,7 @@ export class BasicObject {
     }
 }
 
-export class RootObject {
+export class RootObject implements NavigableObject {
     constructor(id: string, children: Model[], element: Element) {
         this.id = id;
         this.children = children;
@@ -72,9 +85,20 @@ export class RootObject {
     id: string;
     children: Model[];
     element: Element;
+
+    getNavigableNode(): NavigableNode {
+        throw new Error('Not Implementation');
+    }
+
+    getNavigableNodes(): NavigableNode[] {
+        const nodes: NavigableNode[] = [];
+        this.children.map(x => nodes.push(x.getNavigableNode()));
+
+        return nodes;
+    }
 }
 
-export class Model extends BasicObject {
+export class Model extends BasicObject implements NavigableObject {
     #packages: Package[] | undefined;
     #tables: Table[] | undefined;
 
@@ -118,6 +142,33 @@ export class Model extends BasicObject {
         }
 
         return this.#packages;
+    }
+
+    getNavigableNode(): NavigableNode {
+        const children: NavigableNode[] = [];
+
+        this.tables?.map(x => children.push({
+            id: x.id,
+            objectId: x.objectId,
+            name: x.name,
+            code: x.code
+        }));
+
+        this.packages?.map(x => children.push(x.getNavigableNode()));
+
+        const node: NavigableNode = {
+            id: this.id,
+            objectId: this.objectId,
+            name: this.name,
+            code: this.code,
+            children
+        };
+
+        return node;
+    }
+
+    getNavigableNodes(): NavigableNode[] {
+        throw new Error('Not Implementation');
     }
 }
 
