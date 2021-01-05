@@ -2,7 +2,7 @@
     <li class="mb-1" *ngFor="let node of nodes">
         <ng-container *ngIf="node.navigable; else unnavigable">
             <a class="d-inline-flex align-items-center rounded small" href="#"
-                (click)="navigable($event, node)">{{node.name}}</a>
+                (click)="navigate($event, node)">{{node.name}}</a>
         </ng-container>
         <ng-template #unnavigable>
             <button class="btn d-inline-flex align-items-center rounded" [class.collapsed]="node.collapsed"
@@ -15,12 +15,12 @@
                         <ng-container *ngIf="child.navigable; else unnavigable2">
                             <li class="small">
                                 <a class="d-inline-flex align-items-center rounded" href="#"
-                                    (click)="navigable($event, child)">{{child.name}}</a>
+                                    (click)="navigate($event, child)">{{child.name}}</a>
                             </li>
                         </ng-container>
                         <ng-template #unnavigable2>
                             <li class="ml-3">
-                                <app-tree-viewer [child]="child"></app-tree-viewer>
+                                <app-tree-viewer [child]="child" [click]="click"></app-tree-viewer>
                             </li>
                         </ng-template>
                     </ng-container>

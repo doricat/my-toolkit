@@ -45,7 +45,7 @@ export class TreeViewerComponent implements OnInit, OnChanges {
         node.collapsed = !node.collapsed;
     }
 
-    navigable(evt: Event, node: TreeNodeViewModel): void {
+    navigate(evt: Event, node: TreeNodeViewModel): void {
         evt.preventDefault();
         if (this.click) {
             this.click(node.id);
