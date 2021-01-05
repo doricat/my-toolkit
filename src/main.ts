@@ -17,7 +17,19 @@ Document.prototype.parseError = function (): boolean {
     return element !== null;
 };
 
-HTMLCollection.prototype.firstOrDefault = function (): Element | null {
+HTMLCollection.prototype.firstOrDefault = function (filter?: (element: Element) => boolean): Element | null {
+    const collection = this as HTMLCollection;
+    if (filter) {
+        for (let i = 0; i < collection.length; i++) {
+            const element = collection[i];
+            if (filter(element)) {
+                return element;
+            }
+        }
+
+        return null;
+    }
+
     return this.length > 0 ? this[0] : null;
 };
 

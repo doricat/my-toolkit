@@ -106,7 +106,7 @@ export class Model extends BasicObject implements NavigableObject {
         if (this.#tables === undefined) {
             const tables: Table[] = [];
 
-            const element = this.element.querySelector('Tables');
+            const element = this.element.children.firstOrDefault(x => x.nodeName === 'c:Tables');
             if (element) {
                 for (let i = 0; i < element.children.length; i++) {
                     const child = element.children[i];
@@ -127,7 +127,7 @@ export class Model extends BasicObject implements NavigableObject {
         if (this.#packages === undefined) {
             const packages: Package[] = [];
 
-            const element = this.element.querySelector('Packages');
+            const element = this.element.children.firstOrDefault(x => x.nodeName === 'c:Packages');
             if (element) {
                 for (let i = 0; i < element.children.length; i++) {
                     const child = element.children[i];

@@ -1,5 +1,5 @@
 interface HTMLCollection {
-    firstOrDefault: () => Element | null;
+    firstOrDefault: (filter?: (element: Element) => boolean) => Element | null;
 }
 
 interface Document {
