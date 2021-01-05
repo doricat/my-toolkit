@@ -10,6 +10,7 @@ export class TreeViewerComponent implements OnInit, OnChanges {
     nodes: TreeNodeViewModel[] = [];
     @Input() child: TreeNode;
     @Input() children: TreeNode[];
+    @Input() click: (id: string) => void;
 
     constructor() {
 
@@ -42,5 +43,12 @@ export class TreeViewerComponent implements OnInit, OnChanges {
 
     onClick(node: TreeNodeViewModel): void {
         node.collapsed = !node.collapsed;
+    }
+
+    navigable(evt: Event, node: TreeNodeViewModel): void {
+        evt.preventDefault();
+        if (this.click) {
+            this.click(node.id);
+        }
     }
 }
