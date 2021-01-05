@@ -1,0 +1,33 @@
+<ng-container *ngIf="table; else alert">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Code</th>
+                <th scope="col">Comment</th>
+                <th scope="col">DataType</th>
+                <th scope="col">Length</th>
+                <th scope="col">Precision</th>
+                <th scope="col">Mandatory</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let column of table.columns; index as i">
+                <th scope="row">{{i + 1}}</th>
+                <td>{{column.name}}</td>
+                <td>{{column.code}}</td>
+                <td>{{column.comment}}</td>
+                <td>{{column.dataType}}</td>
+                <td>{{column.length}}</td>
+                <td>{{column.precision}}</td>
+                <td>{{column.mandatory}}</td>
+            </tr>
+        </tbody>
+    </table>
+</ng-container>
+<ng-template #alert>
+    <div class="alert alert-primary" role="alert">
+        打开文件并选择表对象查看。
+    </div>
+</ng-template>

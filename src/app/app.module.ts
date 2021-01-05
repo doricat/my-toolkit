@@ -11,6 +11,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { PdmObjectNavComponent } from './pdm-object-nav/pdm-object-nav.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { PdmTableViewerComponent } from './pdm-table-viewer/pdm-table-viewer.component';
 
 @NgModule({
     declarations: [
@@ -21,7 +22,8 @@ import { HomePageComponent } from './home-page/home-page.component';
         NavMenuComponent,
         PdmObjectNavComponent,
         PageNotFoundComponent,
-        HomePageComponent
+        HomePageComponent,
+        PdmTableViewerComponent
     ],
     imports: [
         BrowserModule,
