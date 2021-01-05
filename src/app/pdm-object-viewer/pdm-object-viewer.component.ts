@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PdmService } from '../pdm.service';
 import { TreeNode } from '../tree-viewer/treeNode';
@@ -10,7 +10,7 @@ import { PdmNavigableNode } from './models';
     templateUrl: './pdm-object-viewer.component.html',
     styleUrls: ['./pdm-object-viewer.component.scss']
 })
-export class PdmObjectViewerComponent implements OnInit {
+export class PdmObjectViewerComponent implements OnInit, OnDestroy {
     nodes: TreeNode[];
     serviceSubscription: Subscription | null;
     pdmReader: PdmReader;
@@ -24,6 +24,10 @@ export class PdmObjectViewerComponent implements OnInit {
             this.pdmReader = await PdmReaderFactory.createFromFile(file);
             this.readObjects();
         });
+    }
+
+    ngOnDestroy(): void {
+        this.serviceSubscription?.unsubscribe();
     }
 
     readObjects(): void {
