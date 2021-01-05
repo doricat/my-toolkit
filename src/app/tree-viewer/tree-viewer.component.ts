@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { TreeNode, TreeNodeViewModel } from './treeNode';
 
 @Component({
@@ -10,7 +10,7 @@ export class TreeViewerComponent implements OnInit, OnChanges {
     nodes: TreeNodeViewModel[] = [];
     @Input() child: TreeNode;
     @Input() children: TreeNode[];
-    @Input() click: (id: string) => void;
+    @Output() navigate = new EventEmitter<string>();
 
     constructor() {
 
@@ -45,10 +45,12 @@ export class TreeViewerComponent implements OnInit, OnChanges {
         node.collapsed = !node.collapsed;
     }
 
-    navigate(evt: Event, node: TreeNodeViewModel): void {
+    onNavigate(evt: Event, node: TreeNodeViewModel): void {
         evt.preventDefault();
-        if (this.click) {
-            this.click(node.id);
-        }
+        this.navigate.emit(node.id);
+    }
+
+    onNavigate2(objId: string): void {
+        this.navigate.emit(objId);
     }
 }
