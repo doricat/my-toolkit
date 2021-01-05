@@ -37,5 +37,11 @@ Array.prototype.firstOrDefault = function (): any {
     return this.length > 0 ? this[0] : null;
 };
 
+Array.prototype.copyTo = function (destination: any[]): void {
+    this.map((x: any) => {
+        destination.push(x);
+    });
+};
+
 platformBrowserDynamic().bootstrapModule(AppModule)
     .catch(err => console.error(err));

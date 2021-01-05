@@ -10,11 +10,6 @@ export interface NavigableNode {
     children?: NavigableNode[];
 }
 
-export interface NavigableObject {
-    getNavigableNode(): NavigableNode;
-    getNavigableNodes(): NavigableNode[];
-}
-
 export class BasicObject {
     constructor(id: string, objectId: string, name: string, code: string, element: Element) {
         this.id = id;
@@ -75,7 +70,7 @@ export class BasicObject {
     }
 }
 
-export class RootObject implements NavigableObject {
+export class RootObject {
     constructor(id: string, children: Model[], element: Element) {
         this.id = id;
         this.children = children;
@@ -86,19 +81,22 @@ export class RootObject implements NavigableObject {
     children: Model[];
     element: Element;
 
-    getNavigableNode(): NavigableNode {
-        throw new Error('Not Implementation');
-    }
-
     getNavigableNodes(): NavigableNode[] {
         const nodes: NavigableNode[] = [];
         this.children.map(x => nodes.push(x.getNavigableNode()));
 
         return nodes;
     }
+
+    getAllTables(): Table[] {
+        const tables: Table[] = [];
+        this.children.map(x => x.getAllTables().copyTo(tables));
+
+        return tables;
+    }
 }
 
-export class Model extends BasicObject implements NavigableObject {
+export class Model extends BasicObject {
     #packages: Package[] | undefined;
     #tables: Table[] | undefined;
 
@@ -167,8 +165,12 @@ export class Model extends BasicObject implements NavigableObject {
         return node;
     }
 
-    getNavigableNodes(): NavigableNode[] {
-        throw new Error('Not Implementation');
+    getAllTables(): Table[] {
+        const tables: Table[] = [];
+        this.tables.copyTo(tables);
+        this.packages.map(x => x.getAllTables().copyTo(tables));
+
+        return tables;
     }
 }
 
