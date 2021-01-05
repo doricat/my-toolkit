@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PdmService } from '../pdm.service';
+import { TableService } from '../table.service';
 import { TreeNode } from '../tree-viewer/treeNode';
-import { NavigableNode, PdmReader, PdmReaderFactory, RootObject } from '../models/pdmModels';
+import { NavigableNode, PdmReader, PdmReaderFactory, RootObject, Table } from '../models/pdmModels';
 import { PdmNavigableNode } from './models';
 
 @Component({
@@ -15,8 +16,9 @@ export class PdmObjectViewerComponent implements OnInit, OnDestroy {
     serviceSubscription: Subscription | null;
     pdmReader: PdmReader;
     rootObject: RootObject;
+    tables: Table[];
 
-    constructor(private pdmService: PdmService) {
+    constructor(private pdmService: PdmService, private tableService: TableService) {
     }
 
     ngOnInit(): void {
@@ -35,5 +37,14 @@ export class PdmObjectViewerComponent implements OnInit, OnDestroy {
         const nodes: NavigableNode[] = this.rootObject.getNavigableNodes();
         this.nodes = [];
         nodes.map(x => this.nodes.push(PdmNavigableNode.fromNavigableNode(x).toTreeNode()));
+
+        this.tables = this.rootObject.getAllTables();
+    }
+
+    navigate(objId: string): void {
+        const tables = this.tables.filter(x => x.id === objId);
+        if (tables.length > 0) {
+            this.tableService.sendTable(tables[0]);
+        }
     }
 }
