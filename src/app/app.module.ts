@@ -12,6 +12,7 @@ import { PdmObjectNavComponent } from './pdm-object-nav/pdm-object-nav.component
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { PdmTableViewerComponent } from './pdm-table-viewer/pdm-table-viewer.component';
+import { PdmTableSummaryComponent } from './pdm-table-summary/pdm-table-summary.component';
 
 @NgModule({
     declarations: [
@@ -23,7 +24,8 @@ import { PdmTableViewerComponent } from './pdm-table-viewer/pdm-table-viewer.com
         PdmObjectNavComponent,
         PageNotFoundComponent,
         HomePageComponent,
-        PdmTableViewerComponent
+        PdmTableViewerComponent,
+        PdmTableSummaryComponent
     ],
     imports: [
         BrowserModule,
