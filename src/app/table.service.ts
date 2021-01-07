@@ -6,15 +6,15 @@ import { Table } from './models/pdmModels';
     providedIn: 'root'
 })
 export class TableService {
-    private subject = new Subject<Table>();
+    private subject = new Subject<Table | undefined>();
 
     constructor() { }
 
-    sendTable(table: Table): void {
+    sendTable(table: Table | undefined): void {
         this.subject.next(table);
     }
 
-    getObservable(): Observable<Table> {
+    getObservable(): Observable<Table | undefined> {
         return this.subject.asObservable();
     }
 }

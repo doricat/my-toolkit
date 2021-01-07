@@ -20,16 +20,20 @@ export class PdmTableViewerComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.serviceSubscription = this.tableService.getObservable().subscribe(x => {
             this.pdmTable = x;
-            this.table = new Table(x.columns.length === 0 ? 1 : x.columns.length, 7);
-            for (let i = 0; i < x.columns.length; i++) {
-                const column = x.columns[i];
-                this.table.cells[i][0].content = column.name;
-                this.table.cells[i][1].content = column.code;
-                this.table.cells[i][2].content = column.comment;
-                this.table.cells[i][3].content = column.dataType;
-                this.table.cells[i][4].content = column.length;
-                this.table.cells[i][5].content = column.precision;
-                this.table.cells[i][6].content = String(column.mandatory);
+            this.table = undefined;
+
+            if (x) {
+                this.table = new Table(x.columns.length === 0 ? 1 : x.columns.length, 7);
+                for (let i = 0; i < x.columns.length; i++) {
+                    const column = x.columns[i];
+                    this.table.cells[i][0].content = column.name;
+                    this.table.cells[i][1].content = column.code;
+                    this.table.cells[i][2].content = column.comment;
+                    this.table.cells[i][3].content = column.dataType;
+                    this.table.cells[i][4].content = column.length;
+                    this.table.cells[i][5].content = column.precision;
+                    this.table.cells[i][6].content = String(column.mandatory);
+                }
             }
         });
     }

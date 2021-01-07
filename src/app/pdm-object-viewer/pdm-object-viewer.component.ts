@@ -25,6 +25,7 @@ export class PdmObjectViewerComponent implements OnInit, OnDestroy {
         this.serviceSubscription = this.pdmService.getObservable().subscribe(async file => {
             this.pdmReader = await PdmReaderFactory.createFromFile(file);
             this.readObjects();
+            this.tableService.sendTable(undefined);
         });
     }
 
