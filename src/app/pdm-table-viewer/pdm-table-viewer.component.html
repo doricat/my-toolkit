@@ -1,5 +1,6 @@
 <ng-container *ngIf="table; else alert">
-    <table class="table table-bordered">
+    <table class="table table-bordered" (mouseover)="onMouseOver($event)" (mousedown)="onMouseDown($event)"
+        (mouseup)="onMouseUp($event)">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -13,15 +14,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let column of table.columns; index as i">
+            <tr *ngFor="let row of table.cells; index as i">
                 <th scope="row">{{i + 1}}</th>
-                <td>{{column.name}}</td>
-                <td>{{column.code}}</td>
-                <td>{{column.comment}}</td>
-                <td>{{column.dataType}}</td>
-                <td>{{column.length}}</td>
-                <td>{{column.precision}}</td>
-                <td>{{column.mandatory}}</td>
+                <td *ngFor="let cell of row; index as j" [class.cell-active]="cell.focused" [attr.data-row]="i"
+                    [attr.data-column]="j">{{cell.content}}</td>
             </tr>
         </tbody>
     </table>
