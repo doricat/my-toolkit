@@ -111,6 +111,21 @@ export class Table {
     currentCell?: Point;
     selectedRectangle?: Rectangle;
 
+    static from2DArray(array: string[][]): Table | null {
+        if (array.length === 0) {
+            return null;
+        }
+
+        const table = new Table(array.length, array[0].length);
+        for (let i = 0; i < array.length; i++) {
+            for (let j = 0; j < array[i].length; j++) {
+                table.cells[i][j].content = array[i][j];
+            }
+        }
+
+        return table;
+    }
+
     select(row: number, column: number): void {
         this.currentCell = new Point(row, column);
         this.selectedRectangle = Rectangle.build(this.currentCell, this.currentCell);
@@ -122,6 +137,36 @@ export class Table {
 
     shouldUpdateSelectedCell(row: number, column: number): boolean {
         return !(this.currentCell && this.currentCell.equal(new Point(row, column)));
+    }
+
+    generateClipboardData(): string[][] {
+        const result: string[][] = [];
+        if (this.currentCell && this.selectedRectangle) {
+            const topLeft = this.selectedRectangle.topLeft;
+            const bottomRight = this.selectedRectangle.bottomRight;
+            for (let i = topLeft.row; i <= bottomRight.row; i++) {
+                const row: string[] = [];
+                for (let j = topLeft.column; j <= bottomRight.column; j++) {
+                    row.push(this.cells[i][j].content);
+                }
+                result.push(row);
+            }
+        }
+
+        return result;
+    }
+
+    generatePlainTextTable(): string {
+        const array: string[] = [];
+        for (let i = 0; i < this.cells.length; i++) {
+            const lineItems: string[] = [];
+            for (let j = 0; j < this.cells[i].length; j++) {
+                lineItems.push(this.cells[i][j].content);
+            }
+            array.push(lineItems.join('    '));
+        }
+
+        return array.join('\r\n');
     }
 
     private buildCells(row: number, column: number): void {
