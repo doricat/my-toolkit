@@ -157,19 +157,41 @@ export class Table {
         return result;
     }
 
-    generateClipboardPlainTextData(): string {
-        const array: string[] = [];
+    generateClipboardPlainTextData(format: boolean = true): string {
+        const dict: { [key: number]: number } = {};
+        const array: string[][] = [];
         for (let i = 0; i < this.cells.length; i++) {
             const lineItems: string[] = [];
             for (let j = 0; j < this.cells[i].length; j++) {
                 const content = this.cells[i][j].content ?? ' ';
+                if (format) {
+                    dict[j] = Math.max(dict[j] ?? 0, this.calculateTextWidth(content));
+                }
+
                 lineItems.push(content);
             }
 
-            array.push(lineItems.join(' '));
+            array.push(lineItems);
         }
 
-        return array.join('\r\n');
+        if (format) {
+            for (let i = 0; i < array.length; i++) {
+                for (let j = 0; j < array[i].length; j++) {
+                    const content = array[i][j];
+                    const width = this.calculateTextWidth(array[i][j]);
+                    if (dict[j] - width > 0) {
+                        array[i][j] = content.padEnd(dict[j]);
+                    }
+                }
+            }
+        }
+
+        const lines: string[] = [];
+        for (let i = 0; i < array.length; i++) {
+            lines.push(array[i].join(' '));
+        }
+
+        return lines.join('\r\n');
     }
 
     generateClipboardTableRowData(trStyle: string, tdStyle: string): string[] {
@@ -198,6 +220,23 @@ export class Table {
 
             this.cells.push(rowArray);
         }
+    }
+
+    /** 半角字符为1个单位 全角2个单位 */
+    private calculateTextWidth(text: string): number {
+        let width = 0;
+        for (let i = 0; i < text.length; i++) {
+            const c = text[i];
+            if (/[\uff00-\uffef\u4e00-\u9fa5]/.test(c)) {
+                width += 2;
+            } else if (/[\u0000-\u007f]/.test(c)) {
+                width++;
+            }
+
+            // TODO 其他情况暂不考虑
+        }
+
+        return width;
     }
 
     public get rowCount(): number {
