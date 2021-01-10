@@ -178,9 +178,10 @@ export class Table {
             for (let i = 0; i < array.length; i++) {
                 for (let j = 0; j < array[i].length; j++) {
                     const content = array[i][j];
-                    const width = this.calculateTextWidth(array[i][j]);
-                    if (dict[j] - width > 0) {
-                        array[i][j] = content.padEnd(dict[j]);
+                    const width = this.calculateTextWidth(content);
+                    const gap = dict[j] - width;
+                    if (gap > 0) {
+                        array[i][j] = content + ''.padEnd(gap);
                     }
                 }
             }
