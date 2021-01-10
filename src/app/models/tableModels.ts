@@ -139,7 +139,7 @@ export class Table {
         return !(this.currentCell && this.currentCell.equal(new Point(row, column)));
     }
 
-    generateClipboardData(): string[][] {
+    convertSelectedToArray(): string[][] {
         const result: string[][] = [];
         if (this.currentCell && this.selectedRectangle) {
             const topLeft = this.selectedRectangle.topLeft;
@@ -149,6 +149,7 @@ export class Table {
                 for (let j = topLeft.column; j <= bottomRight.column; j++) {
                     row.push(this.cells[i][j].content);
                 }
+
                 result.push(row);
             }
         }
@@ -156,17 +157,34 @@ export class Table {
         return result;
     }
 
-    generatePlainTextTable(): string {
+    generateClipboardPlainTextData(): string {
         const array: string[] = [];
         for (let i = 0; i < this.cells.length; i++) {
             const lineItems: string[] = [];
             for (let j = 0; j < this.cells[i].length; j++) {
-                lineItems.push(this.cells[i][j].content);
+                const content = this.cells[i][j].content ?? ' ';
+                lineItems.push(content);
             }
-            array.push(lineItems.join('    '));
+
+            array.push(lineItems.join(' '));
         }
 
         return array.join('\r\n');
+    }
+
+    generateClipboardTableRowData(trStyle: string, tdStyle: string): string[] {
+        const rows: string[] = [];
+        for (let i = 0; i < this.cells.length; i++) {
+            const lineItems: string[] = [`<tr style="${trStyle}">`];
+            for (let j = 0; j < this.cells[i].length; j++) {
+                lineItems.push(`<td style="${tdStyle}">${this.cells[i][j].content ?? ''}</td>`);
+            }
+
+            lineItems.push('</tr>');
+            rows.push(lineItems.join('\r\n'));
+        }
+
+        return rows;
     }
 
     private buildCells(row: number, column: number): void {

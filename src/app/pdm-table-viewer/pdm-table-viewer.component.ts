@@ -14,7 +14,7 @@ export class PdmTableViewerComponent implements OnInit, OnDestroy {
     table: Table | undefined;
     serviceSubscription: Subscription | null;
     isMouseDown = false;
-    @ViewChild('clipboardData') clipboardData: ElementRef;
+    @ViewChild('copyableElemRef') copyableElemRef: ElementRef;
     @ViewChild('tableRef') tableRef: ElementRef;
 
     constructor(private tableService: TableService) { }
@@ -70,12 +70,12 @@ export class PdmTableViewerComponent implements OnInit, OnDestroy {
 
     onKeydown(evt: KeyboardEvent): void {
         if (evt.ctrlKey && evt.key === 'c') {
-            const data = this.table.generateClipboardData();
-            const element = this.clipboardData.nativeElement as HTMLInputElement;
+            const data = this.table.convertSelectedToArray();
+            const element = this.copyableElemRef.nativeElement as HTMLInputElement;
             const table = Table.from2DArray(data);
             const clipboardData = {};
-            clipboardData['text/plain'] = table.generatePlainTextTable();
-            clipboardData['text/html'] = this.generateHtml(data);
+            clipboardData['text/plain'] = table.generateClipboardPlainTextData();
+            clipboardData['text/html'] = this.generateClipboardHtmlData(table);
             element.value = JSON.stringify(clipboardData);
             element.select();
             element.setSelectionRange(0, element.value.length);
@@ -83,7 +83,7 @@ export class PdmTableViewerComponent implements OnInit, OnDestroy {
         }
     }
 
-    copy(evt: ClipboardEvent): void {
+    onCopy(evt: ClipboardEvent): void {
         const element = evt.currentTarget as HTMLInputElement;
         const json = element.value;
         const obj = JSON.parse(json) as { [type: string]: string };
@@ -127,7 +127,9 @@ export class PdmTableViewerComponent implements OnInit, OnDestroy {
         return null;
     }
 
-    generateHtml(array: string[][]): string {
+    generateClipboardHtmlData(table: Table): string {
+        const rows = table.generateClipboardTableRowData('display: table-row; vertical-align: inherit; border-color: inherit;',
+            'border: 1px solid #dee2e6; width: 50px; padding: 0.75rem; vertical-align: top;');
         const result = `<!doctype html>
 <html lang="en">
 <head>
@@ -136,25 +138,12 @@ export class PdmTableViewerComponent implements OnInit, OnDestroy {
 <body>
     <table style="border-collapse: collapse; display: table; text-indent: initial; border-spacing: 2px; width: 100%; margin-bottom: 1rem; color: #212529; border: 1px solid #dee2e6;">
         <tbody style="display: table-row-group; vertical-align: middle; border-color: inherit;">
-           ${this.generateCells(array)}
+           ${rows.join('\r\n')}
         </tbody>
     </table>
 </body>
 </html>`;
+
         return result;
-    }
-
-    generateCells(array: string[][]): string {
-        const result: string[] = [];
-        for (let i = 0; i < array.length; i++) {
-            const lineItems: string[] = ['<tr style="display: table-row; vertical-align: inherit; border-color: inherit;">'];
-            for (let j = 0; j < array[i].length; j++) {
-                lineItems.push(`<td style="border: 1px solid #dee2e6; width: 50px; padding: 0.75rem; vertical-align: top;">${array[i][j] ?? ' '}</td>`);
-            }
-            lineItems.push('</tr>');
-            result.push(lineItems.join('\r\n'));
-        }
-
-        return result.join('\r\n');
     }
 }

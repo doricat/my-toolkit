@@ -28,5 +28,5 @@
     </div>
 </ng-template>
 <div class="fake-element">
-    <textarea #clipboardData (copy)="copy($event)"></textarea>
+    <textarea #copyableElemRef (copy)="onCopy($event)"></textarea>
 </div>
