@@ -14,6 +14,7 @@ export class PdmTableViewerComponent implements OnInit, OnDestroy {
     table: Table | undefined;
     serviceSubscription: Subscription | null;
     isMouseDown = false;
+    shiftDown = false;
     @ViewChild('copyableElemRef') copyableElemRef: ElementRef;
     @ViewChild('tableRef') tableRef: ElementRef;
 
@@ -58,8 +59,12 @@ export class PdmTableViewerComponent implements OnInit, OnDestroy {
 
     onMouseDown(evt: MouseEvent): void {
         const element = evt.target as HTMLElement;
-        this.isMouseDown = true;
-        this.selectCell(element);
+        if (this.shiftDown) {
+            this.selectCells(element);
+        } else {
+            this.isMouseDown = true;
+            this.selectCell(element);
+        }
     }
 
     onMouseUp(evt: MouseEvent): void {
@@ -80,6 +85,14 @@ export class PdmTableViewerComponent implements OnInit, OnDestroy {
             element.select();
             element.setSelectionRange(0, element.value.length);
             document.execCommand('copy');
+        } else if (evt.shiftKey) {
+            this.shiftDown = true;
+        }
+    }
+
+    onKeyup(evt: KeyboardEvent): void {
+        if (!evt.shiftKey) {
+            this.shiftDown = false;
         }
     }
 

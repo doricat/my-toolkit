@@ -1,6 +1,6 @@
 <ng-container *ngIf="pdmTable; else alert">
     <table #tableRef class="table table-bordered" (mouseover)="onMouseOver($event)" (mousedown)="onMouseDown($event)"
-        (mouseup)="onMouseUp($event)" (keydown)="onKeydown($event)" tabindex="999">
+        (mouseup)="onMouseUp($event)" (keydown)="onKeydown($event)" (keyup)="onKeyup($event)" tabindex="999">
         <thead>
             <tr>
                 <th scope="col">#</th>
