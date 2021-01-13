@@ -193,6 +193,7 @@ export class Table extends BasicObject {
                     const child = element.children[i];
                     if (child.nodeName === 'o:Column') {
                         const column = BasicObject.readFromElement(child).convertTo(Column);
+                        column.table = this;
                         columns.push(column);
                     }
                 }
@@ -214,6 +215,7 @@ export class Table extends BasicObject {
                     const child = element.children[i];
                     if (child.nodeName === 'o:Key') {
                         const key = BasicObject.readFromElement(child).convertTo(Key);
+                        key.table = this;
                         keys.push(key);
                     }
                 }
@@ -231,7 +233,9 @@ export class Table extends BasicObject {
             if (element) {
                 const child = element.children.firstOrDefault();
                 if (child) {
-                    this.#primaryKey = new PrimaryKey(child.attributes.getNamedItem('Ref')?.value ?? '');
+                    const key = new PrimaryKey(child.attributes.getNamedItem('Ref')?.value ?? '');
+                    key.table = this;
+                    this.#primaryKey = key;
                 }
             }
         }
@@ -245,6 +249,7 @@ export class Column extends BasicObject {
     #length: string | undefined | null;
     #precision: string | undefined | null;
     #mandatory: boolean | undefined | null;
+    table: Table | undefined;
 
     public get dataType(): string | null {
         if (this.#dataType === undefined) {
@@ -281,10 +286,20 @@ export class Column extends BasicObject {
 
         return this.#mandatory;
     }
+
+    public get isPrimaryKey(): boolean {
+        if (this.table?.primaryKey) {
+            const primaryKeyRef = this.table.primaryKey.ref;
+            return this.table.keys.some(x => x.id === primaryKeyRef && x.columns.some(y => y.ref === this.id));
+        }
+
+        return false;
+    }
 }
 
 export class Key extends BasicObject {
     #columns: RefObject[] | undefined;
+    table: Table | undefined;
 
     public get columns(): RefObject[] {
         if (this.#columns === undefined) {
@@ -314,6 +329,7 @@ export class PrimaryKey implements RefObject {
     }
 
     ref: string;
+    table: Table | undefined;
 }
 
 

@@ -36,6 +36,7 @@ export class PdmTableViewerComponent implements OnInit, OnDestroy {
                         column.dataType,
                         column.length,
                         column.precision,
+                        String(column.isPrimaryKey),
                         String(column.mandatory)
                     ];
                     array.push(row);
