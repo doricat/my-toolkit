@@ -43,6 +43,7 @@ export class PdmTableViewerComponent implements OnInit, OnDestroy {
                 }
 
                 this.table = Table.from2DArray(array);
+                window.scrollTo({ top: 64, behavior: 'smooth' });
             }
         });
     }
