@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { PdmService } from '../pdm.service';
-import { TableService } from '../table.service';
-import { TreeNode } from '../tree-viewer/treeNode';
-import { NavigableNode, PdmReader, PdmReaderFactory, RootObject, Table } from '../models/pdmModels';
+import { NavigableNode, PdmReader, PdmReaderFactory, RootObject, Table } from 'src/app/models/pdmModels';
+import { TableService } from 'src/app/services/table.service';
+import { PdmService } from 'src/app/services/pdm.service';
+import { TreeNode } from '../../shared/tree-viewer/treeNode';
 import { PdmNavigableNode } from './models';
 
 @Component({

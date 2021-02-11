@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { Table } from './models/pdmModels';
+import { Table } from '../models/pdmModels';
 
 @Injectable({
     providedIn: 'root'

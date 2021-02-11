@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { PdmService } from '../pdm.service';
+import { PdmService } from 'src/app/services/pdm.service';
 
 @Component({
     selector: 'app-pdm-object-nav',

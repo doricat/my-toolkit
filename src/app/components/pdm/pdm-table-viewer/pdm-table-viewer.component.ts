@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Table as PdmTable } from '../models/pdmModels';
-import { TableService } from '../table.service';
-import { Table } from '../models/tableModels';
+import { Table as PdmTable } from 'src/app/models/pdmModels';
+import { Table } from 'src/app/models/tableModels';
+import { TableService } from 'src/app/services/table.service';
 
 @Component({
     selector: 'app-pdm-table-viewer',

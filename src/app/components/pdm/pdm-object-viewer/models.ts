@@ -1,5 +1,5 @@
-import { TreeNode } from '../tree-viewer/treeNode';
-import { NavigableNode } from '../models/pdmModels';
+import { NavigableNode } from "src/app/models/pdmModels";
+import { TreeNode } from "../../shared/tree-viewer/treeNode";
 
 export class PdmNavigableNode implements NavigableNode {
     id: string;

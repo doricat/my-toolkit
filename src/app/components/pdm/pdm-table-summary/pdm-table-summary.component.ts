@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Table } from '../models/pdmModels';
-import { TableService } from '../table.service';
+import { Table } from 'src/app/models/pdmModels';
+import { TableService } from 'src/app/services/table.service';
 
 @Component({
     selector: 'app-pdm-table-summary',
