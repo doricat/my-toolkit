@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +15,9 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { PdmTableViewerComponent } from './components/pdm//pdm-table-viewer/pdm-table-viewer.component';
 import { PdmTableSummaryComponent } from './components/pdm/pdm-table-summary/pdm-table-summary.component';
+
+import { PdmEffects } from './effects/pdm.effects';
+import { pdmReducer } from './reducers/pdm.reducer';
 
 @NgModule({
     declarations: [
@@ -30,7 +35,9 @@ import { PdmTableSummaryComponent } from './components/pdm/pdm-table-summary/pdm
     imports: [
         BrowserModule,
         AppRoutingModule,
-        NgbModule
+        NgbModule,
+        StoreModule.forRoot({ pdm: pdmReducer }),
+        EffectsModule.forRoot([PdmEffects])
     ],
     providers: [],
     bootstrap: [AppComponent]
