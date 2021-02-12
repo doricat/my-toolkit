@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { NavigableNode, PdmReader, PdmReaderFactory, RootObject, Table } from 'src/app/models/pdmModels';
 import { TableService } from 'src/app/services/table.service';
 import { PdmService } from 'src/app/services/pdm.service';
 import { TreeNode } from '../../shared/tree-viewer/treeNode';
 import { PdmNavigableNode } from './models';
+import { Store } from '@ngrx/store';
+import { PdmState } from 'src/app/reducers/pdm.reducer';
 
 @Component({
     selector: 'app-pdm-object-viewer',
@@ -13,34 +15,26 @@ import { PdmNavigableNode } from './models';
 })
 export class PdmObjectViewerComponent implements OnInit, OnDestroy {
     nodes: TreeNode[];
-    serviceSubscription: Subscription | null;
-    pdmReader: PdmReader;
-    rootObject: RootObject;
+    pdmState$: Observable<PdmState>;
     tables: Table[];
 
-    constructor(private pdmService: PdmService, private tableService: TableService) {
-    }
+    constructor(private tableService: TableService, private store: Store<{ pdm: PdmState }>) {
+        this.pdmState$ = store.select('pdm');
+        this.pdmState$.subscribe(x => {
+            console.log(x);
+            if (x.rootObject) {
+                const nodes: NavigableNode[] = x.rootObject.getNavigableNodes();
+                this.nodes = [];
+                nodes.map(x => this.nodes.push(PdmNavigableNode.fromNavigableNode(x).toTreeNode()));
 
-    ngOnInit(): void {
-        this.serviceSubscription = this.pdmService.getObservable().subscribe(async file => {
-            this.pdmReader = await PdmReaderFactory.createFromFile(file);
-            this.readObjects();
-            this.tableService.sendTable(undefined);
+                this.tables = x.rootObject.getAllTables();
+            }
         });
     }
 
-    ngOnDestroy(): void {
-        this.serviceSubscription?.unsubscribe();
-    }
+    ngOnInit(): void { }
 
-    readObjects(): void {
-        this.rootObject = this.pdmReader.readRootObject();
-        const nodes: NavigableNode[] = this.rootObject.getNavigableNodes();
-        this.nodes = [];
-        nodes.map(x => this.nodes.push(PdmNavigableNode.fromNavigableNode(x).toTreeNode()));
-
-        this.tables = this.rootObject.getAllTables();
-    }
+    ngOnDestroy(): void { }
 
     navigate(objId: string): void {
         const tables = this.tables.filter(x => x.id === objId);

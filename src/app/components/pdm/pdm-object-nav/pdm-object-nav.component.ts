@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { PdmService } from 'src/app/services/pdm.service';
+import { Store } from '@ngrx/store';
+import { readFile } from 'src/app/actions/pdm.actions';
+import { PdmState } from 'src/app/reducers/pdm.reducer';
 
 @Component({
     selector: 'app-pdm-object-nav',
@@ -9,7 +11,7 @@ import { PdmService } from 'src/app/services/pdm.service';
 export class PdmObjectNavComponent implements OnInit {
     @ViewChild('pdmFileInput') fileInput: ElementRef;
 
-    constructor(private pdmService: PdmService) { }
+    constructor(private store: Store<{ pdm: PdmState }>) { }
 
     ngOnInit(): void {
 
@@ -22,10 +24,10 @@ export class PdmObjectNavComponent implements OnInit {
         }
     }
 
-    async selectFile(evt: Event): Promise<void> {
+    selectFile(evt: Event): void {
         const element = evt.currentTarget as HTMLInputElement;
         const file = element.files[0];
         element.value = null;
-        this.pdmService.sendFile(file);
+        this.store.dispatch(readFile({ file }));
     }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { exhaustMap, map } from 'rxjs/operators';
-import { readFile } from '../actions/pdm.actions';
+import { readFile, setObject } from '../actions/pdm.actions';
 import { PdmService } from '../services/pdm.service';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class PdmEffects {
             ofType(readFile),
             exhaustMap(action =>
                 this.pdmService.readFile(action.file).pipe(map(x => {
-                    return { type: 'Set PDM Object', payload: x }
+                    return setObject(x);
                 }))
             )
         )
