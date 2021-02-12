@@ -3,3 +3,5 @@ import { RootObject } from '../models/pdmModels';
 
 export const readFile = createAction('Read PDM File', props<{ file: File }>());
 export const setObject = createAction('Set PDM Object', props<{ fileName: string, rootObject: RootObject }>());
+export const readTables = createAction('Read PDM Tables');
+export const selectTable = createAction('Select PDM Table', props<{ objectId: string }>());

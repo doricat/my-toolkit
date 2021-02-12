@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
 import { Table } from 'src/app/models/pdmModels';
-import { TableService } from 'src/app/services/table.service';
+import { PdmState } from 'src/app/reducers/pdm.reducer';
 
 @Component({
     selector: 'app-pdm-table-summary',
@@ -10,13 +11,20 @@ import { TableService } from 'src/app/services/table.service';
 })
 export class PdmTableSummaryComponent implements OnInit, OnDestroy {
     table: Table | undefined;
+    pdmState$: Observable<PdmState>;
     serviceSubscription: Subscription | null;
 
-    constructor(private tableService: TableService) { }
+    constructor(store: Store<{ pdm: PdmState }>) {
+        this.pdmState$ = store.select('pdm');
+    }
 
     ngOnInit(): void {
-        this.serviceSubscription = this.tableService.getObservable().subscribe(x => {
-            this.table = x;
+        this.serviceSubscription = this.pdmState$.subscribe(x => {
+            if (x.tables === undefined || x.selected === undefined) {
+                return;
+            }
+
+            this.table = x.tables.filter(y => y.id === x.selected)[0];
         });
     }
 

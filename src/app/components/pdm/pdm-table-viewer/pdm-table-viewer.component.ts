@@ -1,8 +1,9 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
 import { Table as PdmTable } from 'src/app/models/pdmModels';
 import { Table } from 'src/app/models/tableModels';
-import { TableService } from 'src/app/services/table.service';
+import { PdmState } from 'src/app/reducers/pdm.reducer';
 
 @Component({
     selector: 'app-pdm-table-viewer',
@@ -15,20 +16,27 @@ export class PdmTableViewerComponent implements OnInit, OnDestroy {
     serviceSubscription: Subscription | null;
     isMouseDown = false;
     shiftDown = false;
+    pdmState$: Observable<PdmState>;
     @ViewChild('copyableElemRef') copyableElemRef: ElementRef;
     @ViewChild('tableRef') tableRef: ElementRef;
 
-    constructor(private tableService: TableService) { }
+    constructor(store: Store<{ pdm: PdmState }>) {
+        this.pdmState$ = store.select('pdm');
+    }
 
     ngOnInit(): void {
-        this.serviceSubscription = this.tableService.getObservable().subscribe(x => {
-            this.pdmTable = x;
+        this.serviceSubscription = this.pdmState$.subscribe(x => {
+            if (x.tables === undefined || x.selected === undefined) {
+                return;
+            }
+
+            this.pdmTable = x.tables.filter(y => y.id === x.selected)[0];
             this.table = undefined;
 
             if (x) {
                 const array: string[][] = [];
-                for (let i = 0; i < x.columns.length; i++) {
-                    const column = x.columns[i];
+                for (let i = 0; i < this.pdmTable.columns.length; i++) {
+                    const column = this.pdmTable.columns[i];
                     const row: string[] = [
                         column.name,
                         column.code,
