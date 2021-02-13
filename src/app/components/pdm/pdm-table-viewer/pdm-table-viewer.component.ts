@@ -13,7 +13,7 @@ import { PdmState } from 'src/app/reducers/pdm.reducer';
 export class PdmTableViewerComponent implements OnInit, OnDestroy {
     pdmTable: PdmTable | undefined;
     table: Table | undefined;
-    serviceSubscription: Subscription | null;
+    subscription?: Subscription;
     isMouseDown = false;
     shiftDown = false;
     pdmState$: Observable<PdmState>;
@@ -25,7 +25,7 @@ export class PdmTableViewerComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.serviceSubscription = this.pdmState$.subscribe(x => {
+        this.subscription = this.pdmState$.subscribe(x => {
             if (x.tables === undefined || x.selected === undefined) {
                 return;
             }
@@ -57,7 +57,7 @@ export class PdmTableViewerComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.serviceSubscription?.unsubscribe();
+        this.subscription?.unsubscribe();
     }
 
     onMouseOver(evt: MouseEvent): void {

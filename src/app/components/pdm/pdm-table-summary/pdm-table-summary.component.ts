@@ -12,14 +12,14 @@ import { PdmState } from 'src/app/reducers/pdm.reducer';
 export class PdmTableSummaryComponent implements OnInit, OnDestroy {
     table: Table | undefined;
     pdmState$: Observable<PdmState>;
-    serviceSubscription: Subscription | null;
+    subscription?: Subscription;
 
     constructor(store: Store<{ pdm: PdmState }>) {
         this.pdmState$ = store.select('pdm');
     }
 
     ngOnInit(): void {
-        this.serviceSubscription = this.pdmState$.subscribe(x => {
+        this.subscription = this.pdmState$.subscribe(x => {
             if (x.tables === undefined || x.selected === undefined) {
                 return;
             }
@@ -29,6 +29,6 @@ export class PdmTableSummaryComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.serviceSubscription?.unsubscribe();
+        this.subscription?.unsubscribe();
     }
 }
