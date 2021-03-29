@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, CssBaseline, Drawer, AppBar, Toolbar, Typography, Divider, IconButton } from '@material-ui/core';
+import { makeStyles, CssBaseline, Drawer, AppBar, Toolbar, Typography, Divider, IconButton, Container } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export const Layout = () => {
+export const Layout = (props: { children: React.ReactChild; }) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const handleDrawerOpen = () => {
@@ -127,6 +127,9 @@ export const Layout = () => {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
+                <Container maxWidth="lg" className={classes.container}>
+                    {props.children}
+                </Container>
             </main>
         </div>
     );
