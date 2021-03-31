@@ -4,6 +4,9 @@ import { makeStyles, CssBaseline, Drawer, AppBar, Toolbar, Typography, Divider, 
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
+import GitHub from '@material-ui/icons/GitHub';
+import Settings from '@material-ui/icons/Settings';
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -102,13 +105,18 @@ export const Layout = (props: { children: React.ReactChild; }) => {
                         color="inherit"
                         aria-label="open drawer"
                         onClick={handleDrawerOpen}
-                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-                    >
+                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}>
                         <MenuIcon />
                     </IconButton>
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                         My-Toolkit
                     </Typography>
+                    <IconButton aria-label="" color="inherit">
+                        <Settings />
+                    </IconButton>
+                    <IconButton aria-label="" color="inherit">
+                        <GitHub />
+                    </IconButton>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -127,7 +135,7 @@ export const Layout = (props: { children: React.ReactChild; }) => {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
+                <Container maxWidth="xl" className={classes.container}>
                     {props.children}
                 </Container>
             </main>
