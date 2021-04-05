@@ -39,4 +39,4 @@ export const PDMTableViewer = () => {
             </Table>
         </TableContainer>
     );
-}
+};
