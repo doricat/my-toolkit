@@ -114,7 +114,7 @@ export const Layout = (props: { children: React.ReactChild; }) => {
                     <IconButton aria-label="" color="inherit">
                         <Settings />
                     </IconButton>
-                    <IconButton aria-label="" color="inherit">
+                    <IconButton aria-label="" color="inherit" href="https://github.com/doricat/my-toolkit">
                         <GitHub />
                     </IconButton>
                 </Toolbar>
