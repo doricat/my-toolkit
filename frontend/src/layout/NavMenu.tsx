@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles, Link } from '@material-ui/core';
-import {Link as RouterLink} from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     link: {
@@ -17,6 +17,9 @@ export const NavMenu: React.FC = () => {
         <nav>
             <Link variant="button" color="textPrimary" className={classes.link} component={RouterLink} to="/pdm-tools">
                 PDM-Tools
+            </Link>
+            <Link variant="button" color="textPrimary" className={classes.link} component={RouterLink} to="/generator">
+                Generator
             </Link>
         </nav>
     );
