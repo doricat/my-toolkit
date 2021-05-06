@@ -14,7 +14,7 @@ export interface NavigableNode {
 }
 
 export class BasicObject {
-    constructor(id: string, objectId: string, element: Element, name?: string, code?: string) {
+    constructor(id: string, objectId: string, element: Element, name: string | null, code: string | null) {
         this.id = id;
         this.objectId = objectId;
         this.name = name;
@@ -24,8 +24,8 @@ export class BasicObject {
 
     id: string;
     objectId: string;
-    name?: string;
-    code?: string;
+    name: string | null;
+    code: string | null;
     element: Element;
     comment: string | null = null;
 
@@ -65,7 +65,7 @@ export class BasicObject {
         return o;
     }
 
-    convertTo<T extends BasicObject>(c: new (id: string, objectId: string, element: Element, name?: string, code?: string) => T): T {
+    convertTo<T extends BasicObject>(c: new (id: string, objectId: string, element: Element, name: string | null, code: string | null) => T): T {
         const o = new c(this.id, this.objectId, this.element, this.name, this.code);
         o.comment = this.comment;
 
