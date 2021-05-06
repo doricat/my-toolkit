@@ -13,7 +13,7 @@ interface Props {
     children: React.ReactChild;
 }
 
-export const BasePage: React.FC<Props> = (props: Props) => {
+export const GeneratorBasePage: React.FC<Props> = (props: Props) => {
     const classes = useStyles();
 
     return (
