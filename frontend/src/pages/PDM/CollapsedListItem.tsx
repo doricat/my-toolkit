@@ -7,6 +7,8 @@ import { NormalListItem } from './NormalListItem';
 interface Props {
     node: TreeNode;
     level: number;
+    selected?: string;
+    onNavigate: (id: string) => void;
 }
 
 export const CollapsedListItem: React.FC<Props> = (props: Props) => {
@@ -26,7 +28,7 @@ export const CollapsedListItem: React.FC<Props> = (props: Props) => {
             </ListItem>
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    <NormalListItem nodes={node.children!} level={props.level + 1} />
+                    <NormalListItem nodes={node.children!} level={props.level + 1} onNavigate={props.onNavigate} selected={props.selected} />
                 </List>
             </Collapse>
         </>
