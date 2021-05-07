@@ -1,5 +1,5 @@
-import { MyTable } from '../pages/PDM/PDMTableViewer';
 import { NavigableNode, Table } from '../types/pdm';
+import { MyTable } from '../types/table';
 import { TreeNode } from '../types/tree';
 
 const toTreeNode = (node: NavigableNode): TreeNode => {
