@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import { App } from './App';
 import reportWebVitals from './reportWebVitals';
+import { ConnectedRouter } from './widgets/ConnectedRouter';
+import { MyContext, store, history } from './configureStore';
 
 ReactDOM.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>,
+    <MyContext.Provider value={store}>
+        <ConnectedRouter history={history}>
+            <App />
+        </ConnectedRouter>
+    </MyContext.Provider>,
     document.getElementById('root')
 );
 

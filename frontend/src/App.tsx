@@ -1,12 +1,13 @@
 import React from 'react';
-import './App.css';
+import { CssBaseline } from '@material-ui/core';
+import { ToolsRoutes } from './Routes';
+import { ScrollToTop } from './widgets/ScrollToTop';
 
-function App() {
+export const App: React.FC = () => {
     return (
-        <div className="App">
-            
-        </div>
+        <ScrollToTop>
+            <CssBaseline />
+            <ToolsRoutes />
+        </ScrollToTop>
     );
-}
-
-export default App;
+};
