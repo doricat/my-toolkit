@@ -1,20 +1,23 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
+import { MyTable } from '../../types/table';
 
 const useStyles = makeStyles({
     table: {
-        minWidth: 650,
+        minWidth: 650
     },
+    cellActive: {
+        backgroundColor: 'darkgray'
+    }
 });
 
-export const PDMTableViewer = () => {
+interface Props {
+    headers: string[];
+    table: MyTable;
+}
+
+export const PDMTableViewer: React.FC<Props> = (props: Props) => {
     const classes = useStyles();
 
     return (
@@ -23,18 +26,20 @@ export const PDMTableViewer = () => {
                 <TableHead>
                     <TableRow>
                         <TableCell>#</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Code</TableCell>
-                        <TableCell>Comment</TableCell>
-                        <TableCell>DataType</TableCell>
-                        <TableCell>Length</TableCell>
-                        <TableCell>Precision</TableCell>
-                        <TableCell>PrimaryKey</TableCell>
-                        <TableCell>Mandatory</TableCell>
+                        {props.headers.map(x => <TableCell key={x}>{x}</TableCell>)}
                     </TableRow>
                 </TableHead>
                 <TableBody>
-
+                    {props.table.cells.map((row, i) => (
+                        <TableRow key={i.toString()}>
+                            <TableCell component="th" scope="row">
+                                {i + 1}
+                            </TableCell>
+                            {row.map((c, l) => (
+                                <TableCell key={l.toString()} className={c.focused ? classes.cellActive : ''}>{c.content}</TableCell>
+                            ))}
+                        </TableRow>
+                    ))}
                 </TableBody>
             </Table>
         </TableContainer>
